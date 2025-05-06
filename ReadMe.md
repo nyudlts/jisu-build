@@ -43,16 +43,43 @@ Collections > Add Collection
   name: bookCollection
   config set: _default
   numShards: 1
-  reaplicantFactor: 1 
+  reaplicantFactor: 1
+Add Collection 
 ```
 
-To update the submodules run:
+4.  Create schema with python and ingest books
+```
+cd jisu-api  
+  
+//install python dependencies (if needed)  
+pip3 install pysolr
+pip3 install ebooklib  
+pip3 install beautifulsoup4  
+  
+python3 create_solr_fields_local.py
+python3 ingest_epub_books_local.py
+```
 
+5. Test ingest in Solr admin
+```
+//open Solr admin  
+http://localhost:8983  
+  
+Choose bookCollection on left  
+Choose Query    
+Choose Execute Query  
+Entries with book data should be seen  
+```
+
+## Updating submodules
+If code is commited to the submodule repos and you need to update them here. 
 ```
 git submodule update --init
 git submodule sync
 git submodule update --remote
 ```
+
+## Production Setup
 
 Once the submodules are in place, use Docker to build images of the projects tagged for ECR
 
