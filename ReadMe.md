@@ -1,8 +1,10 @@
 # jisu-build
 A project to build the Docker images needed to deploy the jisu-reader projects to production on EC2.
 
-## Setup
-This code has three git submodules representing the projects that Docker needs to create images.  nyu-press-reader also has a submodule for ts-toolkit  You can clone the project with the --recursive flag to get these all the needed submodules.
+This project contains three git submodules representing the images that Docker needs to create for the jisu-reader ecosystem.  They are:
+
+jisu-reader
+A web based EPUB reader, based on Readium ts-toolkit.
 
 ```
 git clone https://github.com/BluefireProductions/nyu-press-build.git --recursive

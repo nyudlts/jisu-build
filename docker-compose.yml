@@ -1,0 +1,47 @@
+services:
+  solr:
+    image: solr:9-slim
+    ports:
+      - "8983:8983"
+    networks: [search]
+    environment:
+      ZK_HOST: "zoo:2181"
+    depends_on: [zoo]
+
+  zoo:
+    image: zookeeper:3.9
+    networks: [search]
+    environment:
+      ZOO_4LW_COMMANDS_WHITELIST: "mntr,conf,ruok"
+
+  nyu-press-api:
+    image: 395362471827.dkr.ecr.us-east-1.amazonaws.com/nyu-press-api:latest
+    ports:
+      - "3001:3001"
+    networks: [search]
+    depends_on: [solr]
+    environment:
+      SOLR_HOST: "http://solr:8983"
+
+  nyu-press-reader:
+    image: 395362471827.dkr.ecr.us-east-1.amazonaws.com/nyu-press-reader:latest
+    ports:
+      - "3000:3000"
+    networks: [search]
+    depends_on: [solr]
+    environment:
+      NODE_ENV: "production"
+      API_HOST: "http://nyu-press-api:3001"
+
+  nyu-press-go:
+    image: 395362471827.dkr.ecr.us-east-1.amazonaws.com/nyu-press-go:latest  
+    ports:
+      - "15080:15080"
+    networks: [search]
+    depends_on: [solr]
+    environment:
+      PUBLICATIONS_DIR: "/srv/publications"
+
+networks:
+  search:
+    driver: bridge
