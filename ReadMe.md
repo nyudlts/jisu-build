@@ -72,7 +72,7 @@ Entries with book data should be seen
 ```
 
 ## Updating submodules
-If code is commited to the submodule repos and you need to update them here. 
+If you commit changes to any of the submodule repos and want to update them here: 
 ```
 git submodule update --init
 git submodule sync
