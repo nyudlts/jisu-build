@@ -1,0 +1,12 @@
+[submodule "jisu-pub-server"]
+	path = jisu-pub-server
+	url = https://github.com/nyudlts/jisu-pub-server
+	branch = develop
+[submodule "jisu-reader"]
+	path = jisu-reader
+	url = https://github.com/nyudlts/jisu-reader
+	branch = develop
+[submodule "jisu-api"]
+	path = jisu-api
+	url = https://github.com/nyudlts/jisu-api
+	branch = develop
