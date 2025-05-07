@@ -1,18 +1,18 @@
 services:
   nyu-press-api:
     build: 
-      context: ./nyu-press-api  
+      context: ./jisu-api  
       dockerfile: Dockerfile
     image: 395362471827.dkr.ecr.us-east-1.amazonaws.com/nyu-press-api:latest
 
   nyu-press-reader:
     build: 
-      context: ./nyu-press-reader  
+      context: ./jisu-reader  
       dockerfile: Dockerfile
     image: 395362471827.dkr.ecr.us-east-1.amazonaws.com/nyu-press-reader:latest
 
   nyu-press-go:
     build:
-      context: ./nyu-press-go
+      context: ./jisu-pub-server
       dockerfile: Dockerfile
     image: 395362471827.dkr.ecr.us-east-1.amazonaws.com/nyu-press-go:latest  
