@@ -1,19 +1,19 @@
 # jisu-build
-A project to build the Docker images needed to deploy the **Jews in the Soviet Union** reader projects to production on EC2.  This project contains three git submodules representing the images that Docker needs to create for the jisu-reader stack.  They are:
+A project to facillitate building the Docker containers needed to deploy the **Jews in the Soviet Union** reader projects to production on EC2.  This project contains three git submodules:
   
-jisu-reader  
+[jisu-reader](https://github.com/nyudlts/jisu-reader)  
 A web-based EPUB reader, based on Readium ts-toolkit.  
   
-jisu-pub-server  
+[jisu-pub-server](https://github.com/nyudlts/jisu-pub-server)  
 A Publication Manifest server based on the Readium go-toolkit that serves the manifest needed for ts-toolkit based readers.  
 
-jisu-api  
+[jisu-api](https://github.com/nyudlts/jisu-api)    
 A simple Node.js Express server to enable api calls to the Solr database.  The project also contains python scripts for ingesting EPUB books into Solr.  
 
 ## Dev Setup
-For development purposes it is possible to run these projects locally.  The best way to do that is to clone and run the projects individually, so the submodules here are meant for the production workflows (see below).
+For development purposes it is possible to run each of the above projects locally.  The best way to do that is to clone and run the projects individually, following the Dev Setup section of the ReadMe in each repo.  Note: the submodules here are meant to ease the production workflow.
 
-But this project us useful for launching a local Solr server, using Docker, and to populate it with book data.
+For local development, this project is useful for launching a local Solr server and populating it with book data.
 
 ### Local Solr Server
 
@@ -123,4 +123,5 @@ docker-compose up -d --pull always
 ```
 
 8. Create Solr collection
+
 9. Create Solr schema and ingest books
