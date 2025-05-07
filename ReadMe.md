@@ -28,6 +28,8 @@ python dependencies:
 git clone https://github.com/nyudlts/jisu-build.git --recursive
 ```
 
+2. Clone the build project recursively (if necessary)
+
 2.  Use docker-compose to start Solr in a Docker image
 ```
 cd jisu-build
@@ -72,7 +74,7 @@ Entries with book data should be seen
 ```
 
 ## Updating submodules
-If you commit changes to any of the submodule repos and want to update them here: 
+If you commit changes to any of the submodule repos and want to update them in jisu-build: 
 ```
 git submodule update --init
 git submodule sync
@@ -81,60 +83,44 @@ git submodule update --remote
 
 ## Production Setup
 
-Once the submodules are in place, use Docker to build images of the projects tagged for ECR
+1. Log into EC2 via SSH.  You will need the dlts-aws-jisu.pem file.  (In this example stored in the ~ (home) directory.)
+```
+//make sure permission of the .pem file are correct
+chmod 400 dlts-aws-jisu.pem
 
+//ssh into EC2
+ssh -i ~/dlts-aws-jisu.pem ec2-user@18.205.45.14
+```
+
+2. From EC2, clone the build project (if necessary)
+```
+git clone https://github.com/nyudlts/jisu-build.git --recursive
+```
+
+3. cd into the project folder
+```
+cd jisu-build
+```
+
+4. Build the Docker images
 ```
 docker-compose -f docker-compose.build.yml build
 ```
 
-Authenticate Docker with ECR
+5. Authenticate Docker with ECR
 ```
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 395362471827.dkr.ecr.us-east-1.amazonaws.com
-
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 395362471827.dkr.ecr.us-east-1.amazonaws.com
 ```
 
-Push the images to ECR
+6. Push the images to ECR
 ``` 
-docker-compose -f docker-compose.build.bluefire.yml push
-
 docker-compose -f docker-compose.build.yml push
-
 ```
 
-Log into EC2 via SSH
-```
-Bluefire
-ssh -i ~/ec2-key.pem ec2-user@35.95.95.96
-```
-
-Authenticate EC2 Docker with ECR
-```
-aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 711387123804.dkr.ecr.us-west-2.amazonaws.com
-```
-
-Pull and run images from ECR
+7. Pull and run images from ECR
 ```
 docker-compose up -d --pull always
 ```
 
-## Solr Only
-
-For dev purposes you can run just the Solr servers in a local environment so that eaxch project can be run in development mode on its own.
-
-```
-docker-compose -f docker-compose-solr-only.yml up -d --pull always
-
-//test with solr admin
-
-```
-http://localhost:8983
-
-//create a collection: Collections > Add Collection
-name: bookCollection
-config set: _default
-numShards: 1
-reaplicantFactor: 1
-```
-
-//
+8. Create Solr collection
+9. Create Solr schema and ingest books
