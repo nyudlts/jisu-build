@@ -11,7 +11,7 @@ A Publication Manifest server based on the Readium go-toolkit that serves the ma
 A simple Node.js Express server to enable api calls to the Solr database.  The project also contains python scripts for ingesting EPUB books into Solr.  
 
 ## Dev Setup
-For development purposes it is possible to run each of the above projects locally.  The best way to do that is to clone and run the projects individually, following the Dev Setup section of the ReadMe in each repo.  Note: the submodules here are meant to ease the production workflow.
+For development purposes it is possible to run each of the projects locally.  The best way to do that is to clone and run the projects individually, following the 'Dev Setup' section of the ReadMe in each repo.  Note: the submodules here are meant for the production workflows.
 
 For local development, this project is useful for launching a local Solr server and populating it with book data.
 
@@ -27,8 +27,6 @@ python dependencies:
 ```
 git clone https://github.com/nyudlts/jisu-build.git --recursive
 ```
-
-2. Clone the build project recursively (if necessary)
 
 2.  Use docker-compose to start Solr in a Docker image
 ```
@@ -83,7 +81,8 @@ git submodule update --remote
 
 ## Production Setup
 
-1. Log into EC2 via SSH.  You will need the dlts-aws-jisu.pem file.  (In this example stored in the ~ (home) directory.)
+1. Log into EC2 via SSH.  
+Note: you will need the **dlts-aws-jisu.pem** file.  (In this example stored in the ~ (home) directory.)
 ```
 //make sure permission of the .pem file are correct
 chmod 400 dlts-aws-jisu.pem
@@ -92,7 +91,7 @@ chmod 400 dlts-aws-jisu.pem
 ssh -i ~/dlts-aws-jisu.pem ec2-user@18.205.45.14
 ```
 
-2. From EC2, clone the build project (if necessary)
+2. From EC2, clone the build project
 ```
 git clone https://github.com/nyudlts/jisu-build.git --recursive
 ```
@@ -123,5 +122,44 @@ docker-compose up -d --pull always
 ```
 
 8. Create Solr collection
+```
+//open Solr admin  
+http://18.205.45.14:8983
 
-9. Create Solr schema and ingest books
+Collections > Add Collection
+  name: bookCollection
+  config set: _default
+  numShards: 1
+  reaplicantFactor: 1 
+```
+
+9. Create Solr schema
+```
+//get the container id for jisu-api
+docker ps -a
+
+//exec into the container to run create_solr_fields
+docker exec <cont_id> python3 /usr/app/create_solr_fields.py
+```
+
+10. Ingest EPUBs
+```
+//get the container id for jisu-api
+docker ps -a
+
+//exec into the container to run create_solr_fields
+docker exec <cont_id> python3 /usr/app/ingest_epub_books.py
+```
+
+11. Test the reader in production
+```
+http://18.205.45.14:3000
+```
+Click on a book link from the landing page.  
+If the book content loads then the jisu-pub-server is working.  
+
+Check that the reader footer contains the chapter name on the left side.  
+If so, then Solr and the jisu-api are working.  
+
+Perform a search via the magnifying glass icon in the reader header.  
+If search results are shown then Solr indexing and the jisu-api is working.  
