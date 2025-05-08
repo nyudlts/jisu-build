@@ -80,6 +80,7 @@ git submodule update --remote
 ```
 
 ## Production Setup
+In production the jisu projects run in a series of Docker containers connected by a common Docker network.  jisu-build is meant to make the build process easier by bringing the projects together as submodules and using docker-compose to orchestrate the entire Docker process.  This is accomplished by first connecting to EC2 though ssh and then running the following commands:
 
 1. Log into EC2 via SSH.  
 Note: you will need the **dlts-aws-jisu.pem** file.  (In this example stored in the ~ (home) directory.)
@@ -142,7 +143,7 @@ docker ps -a
 docker exec <cont_id> python3 /usr/app/create_solr_fields.py
 ```
 
-10. Ingest EPUBs
+10. Ingest EPUBs into Solr
 ```
 //get the container id for jisu-api
 docker ps -a
